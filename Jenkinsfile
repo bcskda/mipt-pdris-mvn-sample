@@ -24,7 +24,7 @@ pipeline {
         stage('package and sonar-qube-analyze') {
             steps {
                 withSonarQubeEnv('MySonar') {
-                    sh 'mvn clean package sprint-boot:repackage sonar:sonar'
+                    sh 'mvn clean package spring-boot:repackage sonar:sonar'
                 }
             }
         }
