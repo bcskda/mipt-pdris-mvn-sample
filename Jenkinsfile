@@ -23,7 +23,7 @@ pipeline {
         }
         stage('package and sonar-qube-analyze') {
             steps {
-                withSonarQubeEnv() {
+                withSonarQubeEnv('MySonar') {
                     sh 'mvn clean package sonar:sonar'
                 }
             }
