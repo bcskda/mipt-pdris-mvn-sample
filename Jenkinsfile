@@ -30,7 +30,7 @@ pipeline {
         }
         stage('sonar-qube-quality-gate') {
             steps {
-                timeout(time: 1, unit: 'HOURS') {
+                timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
