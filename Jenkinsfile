@@ -24,7 +24,7 @@ pipeline {
         stage('package and sonar-qube-analyze') {
             steps {
                 withSonarQubeEnv('MySonar') {
-                    sh 'mvn clean package sonar:sonar'
+                    sh 'mvn clean package sprint-boot:repackage sonar:sonar'
                 }
             }
         }
@@ -33,6 +33,15 @@ pipeline {
                 timeout(time: 15, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        stage('deploy-with-ansible') {
+            environment {
+                ANSIBLE_INVENTORY = credentials('ansible-inventory-v1')
+                ANSIBLE_VAULT_PASSWORD_FILE = credentials('ansible-vault-password-file-v1')
+            }
+            steps {
+                sh 'ansible-playbook --vault-password-file=$ANSIBLE_VAULT_PASSWORD_FILE -i $ANSIBLE_INVENTORY deploy/play-install.yml'
             }
         }
     }
