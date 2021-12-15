@@ -28,13 +28,6 @@ pipeline {
                 }
             }
         }
-        stage('sonar-qube-quality-gate') {
-            steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
         stage('deploy-with-ansible') {
             environment {
                 ANSIBLE_INVENTORY = credentials('ansible-inventory-v1')
