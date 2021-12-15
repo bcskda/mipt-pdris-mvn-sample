@@ -21,9 +21,18 @@ pipeline {
               ])
             }}
         }
-        stage('package') {
+        stage('package and sonar-qube-analyze') {
             steps {
-                sh 'mvn package'
+                withSonarQubeEnv() {
+                    sh 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage('sonar-qube-quality-gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
