@@ -1,0 +1,5 @@
+---
+  - name: ensure application running
+    service:
+      name: mipt-pdris-mvn-sample
+      state: started
