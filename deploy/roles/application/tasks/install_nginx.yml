@@ -1,0 +1,25 @@
+---
+  - name: ensure nginx installed
+    become: yes
+    package:
+      name: nginx
+      state: present
+
+  - name: ensure nginx config present
+    become: yes
+    copy:
+      src: files/nginx.conf
+      dest: /etc/nginx/sites-enabled/mipt-pdris-mvn-sample.conf
+      backup: yes
+      force: yes
+    register: nginx_conf
+
+  - name: ensure nginx config valid
+    become: yes
+    command: nginx -t
+
+  - name: ensure nginx running with new configuration
+    become: yes
+    service:
+      name: nginx
+      state: reloaded

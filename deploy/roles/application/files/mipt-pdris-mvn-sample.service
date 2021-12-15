@@ -1,0 +1,10 @@
+[Unit]
+Description=A Spring Boot application (kuptsov.da)
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -jar /opt/mipt-pdris-mvn-sample/mipt-pdris-mvn-sample-1.0-SNAPSHOT.jar
+User=nobody
+
+[Install] 
+WantedBy=multi-user.target 

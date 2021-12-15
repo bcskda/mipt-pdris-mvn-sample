@@ -1,0 +1,31 @@
+---
+  - name: ensure jre-11 installed
+    block:
+    - name: on centos-8
+      when: ansible_facts['os_family'] == 'RedHat'
+      become: yes
+      package:
+        name: java-11-openjdk-headless
+        state: present
+    - name: on debian-10
+      when: ansible_facts['os_family'] == 'Debian'
+      become: yes
+      package:
+        name: openjdk-11-jre-headless
+        state: present
+
+  - name: ensure application jar installed
+    become: yes
+    copy:
+      src: ../target/mipt-pdris-mvn-sample-1.0-SNAPSHOT.jar
+      dest: /opt/mipt-pdris-mvn-sample/
+      force: yes
+      backup: no
+
+  - name: ensure systemd unit installed
+    become: yes
+    copy:
+      src: files/mipt-pdris-mvn-sample.service
+      dest: /etc/systemd/system/
+      force: yes
+      backup: no
