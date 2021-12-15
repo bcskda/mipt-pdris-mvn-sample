@@ -11,6 +11,16 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        stage('post-allure-results') {        
+            steps { script {
+              allure([
+                  results: [
+                      [path: './allure-results']
+                  ],
+                  reportBuildPolicy: 'ALWAYS'
+              ])
+            }}
+        }
         stage('package') {
             steps {
                 sh 'mvn package'
